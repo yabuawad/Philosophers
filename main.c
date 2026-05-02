@@ -1,40 +1,55 @@
 #include "philo.h"
 
-void create_philos(t_prop prop)
+void *threading(void *arg)
 {
-    int i = 1;
-    while(i < prop.number_of_philosophers + 1)
+    t_philo *p = (t_philo *)arg;
+    printf("philo number : %d is running\n",p->philo_id);
+    return NULL;
+}
+
+void create_philos(t_prop *prop)
+{
+    int     i;
+    int     x;
+
+    i = 0;
+    x = 0;
+    prop->philo = malloc(sizeof(t_philo) * prop->number_of_philosophers);
+    if(!prop->philo)
+        return;
+    while(i < prop->number_of_philosophers)
     {
-        t_philo philo;
-        pthread_create();
-        philo.philo_id = i;
+        prop->philo[i].philo_id = ++x;
+        pthread_create(&prop->philo[i].thread,NULL,threading,&prop->philo[i]);
+        i++;
+    }
+    i = 0;
+    while(i < prop->number_of_philosophers)
+    {
+        pthread_join(prop->philo[i].thread,NULL);
         i++;
     }
 }
 
-void init_prop(t_prop prop)
+int init_propreties(char **argv,t_prop *prop)
 {
-    prop.number_of_philosophers = 0;
-    prop.time_to_die = 0;
-    prop.time_to_eat = 0;
-    prop.time_to_sleep = 0;
-}
-void fill_propreties(char **argv,t_prop prop)
-{
-    prop.number_of_philosophers = argv[1];
-    prop.time_to_die = argv[2];
-    prop.time_to_eat = argv[3];
-    if(argv[4])
-        prop.time_to_sleep = argv[4];
+    if(!input_check(argv))
+        return 0;
+    prop->number_of_philosophers = ft_atoi(argv[1]);
+    prop->time_to_die = ft_atoi(argv[2]);
+    prop->time_to_eat = ft_atoi(argv[3]);
+    prop->time_to_sleep = ft_atoi(argv[4]);
+    return 1;
 }
 int main(int argc, char **argv)
 {
-    if(argc != 3)
+    if(argc != 5)
         return 1;
-    t_prop prop;
-    init_prop(prop);
-    fill_propreties(argv,prop);
-    create_philos(prop);
+    t_prop  prop;
+    if(!init_propreties(argv,&prop))
+        return 1;
+    create_philos(&prop);
+    free(prop.philo);
 }
 
 
