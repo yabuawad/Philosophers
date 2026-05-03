@@ -55,3 +55,19 @@ int input_check(char **argv)
     }
     return 1;
 }
+
+static long getrealtime()
+{
+	struct timeval tv;
+	gettimeofday(&tv,NULL);
+	return((tv.tv_usec / 1000) + tv.tv_sec * 1000);
+}
+
+void zzz(int time_to_sleep)
+{
+	long	initial_time;
+
+	initial_time = getrealtime();
+	while((getrealtime() - initial_time) < time_to_sleep)
+		usleep(600);
+}
