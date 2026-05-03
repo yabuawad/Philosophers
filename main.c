@@ -27,6 +27,7 @@ void create_philos(t_prop *prop)
     while(i < prop->number_of_philosophers)
     {
         prop->philo[i].philo_id = ++x;
+        prop->philo[i].prop = prop;
         pthread_create(&prop->philo[i].thread,NULL,threading,&prop->philo[i]);
         i++;
     }

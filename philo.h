@@ -7,12 +7,15 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+typedef struct s_propreties t_prop;
+
 typedef struct s_philo
 {
     int     philo_id;
     int     isdead;
     int     meals_eaten;
     pthread_t   thread;
+    t_prop      *prop;
 } t_philo;
 
 typedef struct s_propreties
