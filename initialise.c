@@ -44,8 +44,10 @@ void destroy_mutexes(t_prop *prop)
 void myprint(t_prop *prop,int philo_id,char *message)
 {
     long    time;
+    long    current_time;
     pthread_mutex_lock(&prop->printlock);
-    time = prop->start_time - getrealtime();
-    printf("%ld philosopher %i %s\n",time,philo_id,message);
+    current_time = getrealtime();
+    time = current_time - prop->start_time;
+    printf("%ld %i %s\n",time,philo_id,message);
     pthread_mutex_unlock(&prop->printlock);
 }
