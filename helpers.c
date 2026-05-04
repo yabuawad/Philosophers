@@ -56,7 +56,7 @@ int input_check(char **argv)
     return 1;
 }
 
-static long getrealtime()
+ long getrealtime()
 {
 	struct timeval tv;
 	gettimeofday(&tv,NULL);
@@ -70,4 +70,12 @@ void zzz(int time_to_sleep)
 	initial_time = getrealtime();
 	while((getrealtime() - initial_time) < time_to_sleep)
 		usleep(600);
+}
+
+
+void freeall(t_prop *prop)
+{
+	free(prop->philo);
+	free(prop->forks);
+	destroy_mutexes(prop);
 }
