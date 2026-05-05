@@ -4,6 +4,7 @@ int init_propreties(char **argv,t_prop *prop)
 {
     if(!input_check(argv))
         return 0;
+    prop->death = 0;
     prop->number_of_philosophers = ft_atoi(argv[1]);
     if(prop->number_of_philosophers > 200)
         return 0;
@@ -17,28 +18,34 @@ int init_propreties(char **argv,t_prop *prop)
     return 1;
 }
 
-void init_forks(t_prop *prop)
+int  init_forks(t_prop *prop)
 {
     int i = 0;
     prop->forks = malloc(sizeof(pthread_mutex_t) * prop->number_of_philosophers);
     if(!prop->forks)
-        return;
+        return 0;
     while(i < prop->number_of_philosophers)
     {
         pthread_mutex_init(&prop->forks[i],NULL);
         i++;
     }
+    pthread_mutex_init(&prop->meallock, NULL);
+    pthread_mutex_init(&prop->printlock, NULL);
+    pthread_mutex_init(&prop->deathlock, NULL);
+    return 1;
 }
 
 void destroy_mutexes(t_prop *prop)
 {
-    int i = 1;
-    while(i <= prop->number_of_philosophers)
+    int i = 0;
+    while(i < prop->number_of_philosophers)
     {
         pthread_mutex_destroy(&prop->forks[i]);
         i++;
     }
     pthread_mutex_destroy(&prop->printlock);
+    pthread_mutex_destroy(&prop->deathlock);
+    pthread_mutex_destroy(&prop->meallock);
 }
 
 void myprint(t_prop *prop,int philo_id,char *message)
