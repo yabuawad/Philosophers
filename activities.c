@@ -2,13 +2,26 @@
 
 void sleeep(t_philo *philo)
 {
+    int isdead;
+    pthread_mutex_lock(&philo->prop->deathlock);
+    isdead =philo->prop->death;
+    pthread_mutex_unlock(&philo->prop->deathlock);
+    if(isdead == 1)
+        return;
     myprint(philo->prop,philo->philo_id,"is sleeping");
     zzz(philo->prop->time_to_sleep);
 }
 
 void think(t_philo *philo)
 {
+    int isdead;
+    pthread_mutex_lock(&philo->prop->deathlock);
+    isdead =philo->prop->death;
+    pthread_mutex_unlock(&philo->prop->deathlock);
+    if(isdead == 1)
+        return;
     myprint(philo->prop,philo->philo_id,"is thinking");
+    usleep(1000);
 }
 
 void set_order(t_philo *philo)
@@ -27,16 +40,19 @@ void set_order(t_philo *philo)
 
 void eat(t_philo *philo)
 {
+
     if(philo->prop->number_of_philosophers == 1)
     {
         pthread_mutex_lock(philo->left_fork);
-        myprint(philo->prop,philo->philo_id,"has taken a fork");
+        myprint(philo->prop, philo->philo_id, "has taken a fork");
         zzz(philo->prop->time_to_die);
-        myprint(philo->prop,philo->philo_id,"died");
-
-        // pthread_mutex_lock(&philo->prop->deathlock);
-        // philo->died = 1;
-        // pthread_mutex_unlock(&philo->prop->deathlock);
+        pthread_mutex_lock(&philo->prop->deathlock);
+        if(philo->prop->death == 0)
+        {
+            myprint(philo->prop, philo->philo_id, "died");
+            philo->prop->death = 1;
+        }
+        pthread_mutex_unlock(&philo->prop->deathlock);
         pthread_mutex_unlock(philo->left_fork);
         return;
     }

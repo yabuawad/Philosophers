@@ -56,6 +56,22 @@ int input_check(char **argv)
     return 1;
 }
 
+int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
+{
+	unsigned int	i;
+
+	i = 0;
+	while ((i < n && s1[i] == s2[i]) && s1[i])
+	{
+		i++;
+	}
+	if (i == n)
+		return (0);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+
+
  long getrealtime()
 {
 	struct timeval tv;
@@ -76,6 +92,5 @@ void zzz(int time_to_sleep)
 void freeall(t_prop *prop)
 {
 	free(prop->philo);
-	free(prop->forks);
 	destroy_mutexes(prop);
 }

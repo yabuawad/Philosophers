@@ -46,15 +46,25 @@ void destroy_mutexes(t_prop *prop)
     pthread_mutex_destroy(&prop->printlock);
     pthread_mutex_destroy(&prop->deathlock);
     pthread_mutex_destroy(&prop->meallock);
+    free(prop->forks);
 }
 
-void myprint(t_prop *prop,int philo_id,char *message)
+void myprint(t_prop *prop, int id, char *msg)
 {
-    long    time;
-    long    current_time;
+    long time;
+
     pthread_mutex_lock(&prop->printlock);
-    current_time = getrealtime();
-    time = current_time - prop->start_time;
-    printf("%ld %i %s\n",time,philo_id,message);
+
+    pthread_mutex_lock(&prop->deathlock);
+    if (prop->death && ft_strncmp(msg, "died", 4) != 0)
+    {
+        pthread_mutex_unlock(&prop->deathlock);
+        pthread_mutex_unlock(&prop->printlock);
+        return;
+    }
+    pthread_mutex_unlock(&prop->deathlock);
+    time = getrealtime() - prop->start_time;
+    printf("%ld %d %s\n", time, id, msg);
+
     pthread_mutex_unlock(&prop->printlock);
 }

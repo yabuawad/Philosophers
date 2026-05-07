@@ -4,16 +4,24 @@ void    *threading(void *arg)
 {
     t_philo *philo;
     int i;
+    int isdead = 0;
 
     philo = (t_philo *)arg;
     i = 0;
-    philo->last_meal_time = getrealtime();
-    while (!philo->prop->death)
+    // pthread_mutex_lock(&philo->prop->meallock);
+    // philo->last_meal_time = getrealtime();
+    // pthread_mutex_unlock(&philo->prop->meallock);
+    while (!isdead)
     {
+        pthread_mutex_lock(&philo->prop->deathlock);
+        isdead =philo->prop->death; 
+        pthread_mutex_unlock(&philo->prop->deathlock);
+        if(isdead)
+            break;
         eat(philo);
         sleeep(philo);
         think(philo);
-        printf("\n");
+        // printf("\n");
     }
     return NULL;
 }
@@ -22,6 +30,7 @@ void    *threading(void *arg)
 int    check_death(t_prop *prop)
 {
     int     i;
+    int     isdead;
     long    last_meal;    
 
     i = 0;
@@ -33,12 +42,15 @@ int    check_death(t_prop *prop)
         if((getrealtime() - last_meal) > prop->time_to_die)
         {
             pthread_mutex_lock(&prop->deathlock);
-            if(prop->death == 0)
+            isdead = prop->death;
+            pthread_mutex_unlock(&prop->deathlock);
+            if(!isdead)
             {
+                pthread_mutex_lock(&prop->deathlock);
                 prop->death= 1;
+                pthread_mutex_unlock(&prop->deathlock);
                 myprint(prop,prop->philo[i].philo_id,"died");
             }
-            pthread_mutex_unlock(&prop->deathlock);
             return 0;
         }
         i++;
@@ -93,6 +105,7 @@ void create_philos(t_prop *prop)
     {
         prop->philo[i].philo_id = ++x;
         prop->philo[i].prop = prop;
+        prop->philo[i].last_meal_time = prop->start_time;
         prop->philo[i].left_fork = &prop->forks[i];
         prop->philo[i].right_fork = &prop->forks[(i + 1) % prop->number_of_philosophers];
         pthread_create(&prop->philo[i].thread,NULL,threading,&prop->philo[i]);

@@ -54,5 +54,7 @@ long getrealtime();
 void eat(t_philo *philo);
 void destroy_mutexes(t_prop *prop);
 void myprint(t_prop *prop,int philo_id,char *message);
+int    check_death(t_prop *prop);
+int	ft_strncmp(const char *s1, const char *s2, unsigned int n);
 
 # endif
