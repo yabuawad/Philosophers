@@ -68,3 +68,18 @@ void myprint(t_prop *prop, int id, char *msg)
 
     pthread_mutex_unlock(&prop->printlock);
 }
+
+
+void print_death(t_prop *prop, int id)
+{
+    pthread_mutex_lock(&prop->deathlock);
+    if (prop->death == 0)
+    {
+        prop->death = 1;
+
+        pthread_mutex_lock(&prop->printlock);
+        printf("%ld %d died\n", getrealtime() - prop->start_time, id);
+        pthread_mutex_unlock(&prop->printlock);
+    }
+    pthread_mutex_unlock(&prop->deathlock);
+}

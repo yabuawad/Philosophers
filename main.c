@@ -1,5 +1,29 @@
 #include "philo.h"
 //A mutex only works if ALL accesses to the same data use the SAME mutex
+int simulation_limit(t_prop *prop)
+{
+    int i;
+
+    if (prop->n_times == -1)
+        return 0;
+
+    pthread_mutex_lock(&prop->meallock);
+
+    i = 0;
+    while (i < prop->number_of_philosophers)
+    {
+        if (prop->philo[i].eat_times < prop->n_times)
+        {
+            pthread_mutex_unlock(&prop->meallock);
+            return 0;
+        }
+        i++;
+    }
+
+    pthread_mutex_unlock(&prop->meallock);
+    return 1;
+}
+
 void    *threading(void *arg)
 {
     t_philo *philo;
@@ -8,10 +32,9 @@ void    *threading(void *arg)
 
     philo = (t_philo *)arg;
     i = 0;
-    // pthread_mutex_lock(&philo->prop->meallock);
-    // philo->last_meal_time = getrealtime();
-    // pthread_mutex_unlock(&philo->prop->meallock);
-    while (!isdead)
+    if(philo->philo_id % 2 == 0)
+        usleep(1000);
+    while (!isdead && !simulation_limit(philo->prop))
     {
         pthread_mutex_lock(&philo->prop->deathlock);
         isdead =philo->prop->death; 
@@ -21,7 +44,6 @@ void    *threading(void *arg)
         eat(philo);
         sleeep(philo);
         think(philo);
-        // printf("\n");
     }
     return NULL;
 }
@@ -105,6 +127,7 @@ void create_philos(t_prop *prop)
     {
         prop->philo[i].philo_id = ++x;
         prop->philo[i].prop = prop;
+        prop->philo[i].eat_times = 0;
         prop->philo[i].last_meal_time = prop->start_time;
         prop->philo[i].left_fork = &prop->forks[i];
         prop->philo[i].right_fork = &prop->forks[(i + 1) % prop->number_of_philosophers];
@@ -128,3 +151,8 @@ int main(int argc, char **argv)
     create_philos(&prop);
     freeall(&prop);
 }
+
+
+//solve starvation issue
+//one philo lags
+//implement 5th argument 

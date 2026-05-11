@@ -14,6 +14,7 @@ typedef struct s_philo
     int     philo_id;
     long    last_meal_time;
     int     died;
+    int     eat_times; 
     pthread_mutex_t *right_fork;
     pthread_mutex_t *left_fork;
     pthread_mutex_t *first_fork;
@@ -32,7 +33,6 @@ typedef struct s_propreties
     long    current_time;
     int     n_times;
     int     death;
-
     pthread_t  controller_id;
     pthread_mutex_t *forks;
     pthread_mutex_t   printlock;
@@ -56,5 +56,5 @@ void destroy_mutexes(t_prop *prop);
 void myprint(t_prop *prop,int philo_id,char *message);
 int    check_death(t_prop *prop);
 int	ft_strncmp(const char *s1, const char *s2, unsigned int n);
-
+void print_death(t_prop *prop, int id);
 # endif

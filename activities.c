@@ -40,22 +40,21 @@ void set_order(t_philo *philo)
 
 void eat(t_philo *philo)
 {
-
-    if(philo->prop->number_of_philosophers == 1)
+    pthread_mutex_lock(&philo->prop->meallock);
+    philo->eat_times++;
+    pthread_mutex_lock(&philo->prop->meallock);
+    if (philo->prop->number_of_philosophers == 1)
     {
         pthread_mutex_lock(philo->left_fork);
         myprint(philo->prop, philo->philo_id, "has taken a fork");
         zzz(philo->prop->time_to_die);
-        pthread_mutex_lock(&philo->prop->deathlock);
-        if(philo->prop->death == 0)
-        {
-            myprint(philo->prop, philo->philo_id, "died");
-            philo->prop->death = 1;
-        }
-        pthread_mutex_unlock(&philo->prop->deathlock);
         pthread_mutex_unlock(philo->left_fork);
+        print_death(philo->prop,philo->philo_id);
         return;
     }
+    if (philo->prop->death)
+        return;
+    usleep(100);
     set_order(philo);
     pthread_mutex_lock(philo->first_fork);
     myprint(philo->prop,philo->philo_id,"has taken a fork");
