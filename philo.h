@@ -33,6 +33,7 @@ typedef struct s_propreties
     long    current_time;
     int     n_times;
     int     death;
+    int     philos_ate;
     pthread_t  controller_id;
     pthread_mutex_t *forks;
     pthread_mutex_t   printlock;
@@ -54,7 +55,7 @@ long getrealtime();
 void eat(t_philo *philo);
 void destroy_mutexes(t_prop *prop);
 void myprint(t_prop *prop,int philo_id,char *message);
-int    check_death(t_prop *prop);
+int    check_death(t_prop *prop,int i,int isdead);
 int	ft_strncmp(const char *s1, const char *s2, unsigned int n);
 void print_death(t_prop *prop, int id);
 # endif

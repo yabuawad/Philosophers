@@ -49,13 +49,11 @@ void    *threading(void *arg)
 }
 
 
-int    check_death(t_prop *prop)
+int    check_death(t_prop *prop,int i,int isdead)
 {
-    int     i;
-    int     isdead;
     long    last_meal;    
 
-    i = 0;
+    prop->philos_ate = 0;
     while(i < prop->number_of_philosophers)
     {
         pthread_mutex_lock(&prop->meallock);
@@ -67,37 +65,24 @@ int    check_death(t_prop *prop)
             isdead = prop->death;
             pthread_mutex_unlock(&prop->deathlock);
             if(!isdead)
-            {
-                pthread_mutex_lock(&prop->deathlock);
-                prop->death= 1;
-                pthread_mutex_unlock(&prop->deathlock);
-                myprint(prop,prop->philo[i].philo_id,"died");
-            }
+                print_death(prop,prop->philo[i].philo_id);
             return 0;
         }
+        if(prop->philo[i].eat_times == prop->n_times)
+            prop->philos_ate++;
+        if(prop->philos_ate == prop->number_of_philosophers)
+            return 0;
         i++;
     }
     return 1;
 }
 
-void    *controller(void *arg)
+void *controller(void *arg)
 {
-    t_prop  *prop;
+    t_prop *prop = (t_prop *)arg;
 
-    prop = (t_prop *)arg;
-    while(1)
-    {
-        if(!check_death(prop))
-            return NULL;
+    while (check_death(prop,0,0))
         usleep(1000);
-        pthread_mutex_lock(&prop->deathlock);
-        if(prop->death == 1)
-        {
-            pthread_mutex_unlock(&prop->deathlock);
-            return NULL;
-        }
-        pthread_mutex_unlock(&prop->deathlock);
-    }
     return NULL;
 }
 
@@ -151,8 +136,3 @@ int main(int argc, char **argv)
     create_philos(&prop);
     freeall(&prop);
 }
-
-
-//solve starvation issue
-//one philo lags
-//implement 5th argument 

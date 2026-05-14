@@ -37,12 +37,8 @@ void set_order(t_philo *philo)
         philo->first_fork = philo->right_fork;
     }
 }
-
-void eat(t_philo *philo)
+int check_onephilo(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->prop->meallock);
-    philo->eat_times++;
-    pthread_mutex_lock(&philo->prop->meallock);
     if (philo->prop->number_of_philosophers == 1)
     {
         pthread_mutex_lock(philo->left_fork);
@@ -50,22 +46,32 @@ void eat(t_philo *philo)
         zzz(philo->prop->time_to_die);
         pthread_mutex_unlock(philo->left_fork);
         print_death(philo->prop,philo->philo_id);
-        return;
+        return 0;
     }
-    if (philo->prop->death)
+    return 1;
+}
+
+void eat(t_philo *philo)
+{
+    int isdead;
+    pthread_mutex_lock(&philo->prop->deathlock);
+    isdead = philo->prop->death;
+    pthread_mutex_unlock(&philo->prop->deathlock);
+    if (isdead)
         return;
-    usleep(100);
+    if (!check_onephilo(philo))
+        return;
     set_order(philo);
     pthread_mutex_lock(philo->first_fork);
-    myprint(philo->prop,philo->philo_id,"has taken a fork");
+    myprint(philo->prop, philo->philo_id, "has taken a fork");
     pthread_mutex_lock(philo->second_fork);
-    myprint(philo->prop,philo->philo_id,"has taken a fork");
+    myprint(philo->prop, philo->philo_id, "has taken a fork");
     pthread_mutex_lock(&philo->prop->meallock);
     philo->last_meal_time = getrealtime();
+    philo->eat_times++;
     pthread_mutex_unlock(&philo->prop->meallock);
-    myprint(philo->prop,philo->philo_id,"is eating");
+    myprint(philo->prop, philo->philo_id, "is eating");
     zzz(philo->prop->time_to_eat);
     pthread_mutex_unlock(philo->first_fork);
     pthread_mutex_unlock(philo->second_fork);
 }
-

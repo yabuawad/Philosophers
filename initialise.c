@@ -5,6 +5,7 @@ int init_propreties(char **argv,t_prop *prop)
     if(!input_check(argv))
         return 0;
     prop->death = 0;
+    prop->philos_ate = 0;
     prop->number_of_philosophers = ft_atoi(argv[1]);
     if(prop->number_of_philosophers > 200)
         return 0;
