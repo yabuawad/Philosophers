@@ -45,7 +45,6 @@ int main(int argc, char **argv)
         return 1;
     t_prop  prop;
     prop.start_time = getrealtime();
-    pthread_mutex_init(&prop.printlock,NULL);
     if(!init_propreties(argv,&prop) || !init_forks(&prop))
         return 1;
     create_philos(&prop);

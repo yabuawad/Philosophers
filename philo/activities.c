@@ -71,7 +71,7 @@ void eat(t_philo *philo)
     philo->eat_times++;
     pthread_mutex_unlock(&philo->prop->meallock);
     myprint(philo->prop, philo->philo_id, "is eating");
-    zzz(philo->prop->time_to_eat);
     pthread_mutex_unlock(philo->first_fork);
     pthread_mutex_unlock(philo->second_fork);
+    zzz(philo->prop->time_to_eat);
 }

@@ -19,17 +19,14 @@ void zzz(int time_to_sleep)
 void myprint(t_prop *prop, int id, char *msg)
 {
     long time;
-
-    pthread_mutex_lock(&prop->printlock);
+    int dead;
 
     pthread_mutex_lock(&prop->deathlock);
-    if (prop->death && ft_strncmp(msg, "died", 4) != 0)
-    {
-        pthread_mutex_unlock(&prop->deathlock);
-        pthread_mutex_unlock(&prop->printlock);
-        return;
-    }
+    dead = prop->death;
     pthread_mutex_unlock(&prop->deathlock);
+    if (dead && ft_strncmp(msg, "died", 4) != 0)
+        return;
+    pthread_mutex_lock(&prop->printlock);
     time = getrealtime() - prop->start_time;
     printf("%ld %d %s\n", time, id, msg);
     pthread_mutex_unlock(&prop->printlock);
