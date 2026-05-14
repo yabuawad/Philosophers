@@ -58,4 +58,6 @@ void myprint(t_prop *prop,int philo_id,char *message);
 int    check_death(t_prop *prop,int i,int isdead);
 int	ft_strncmp(const char *s1, const char *s2, unsigned int n);
 void print_death(t_prop *prop, int id);
+void *controller(void *arg);
+void    *threading(void *arg);
 # endif

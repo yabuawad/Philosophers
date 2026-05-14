@@ -70,22 +70,6 @@ int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
- long getrealtime()
-{
-	struct timeval tv;
-	gettimeofday(&tv,NULL);
-	return((tv.tv_usec / 1000) + tv.tv_sec * 1000);
-}
-
-void zzz(int time_to_sleep)
-{
-	long	initial_time;
-
-	initial_time = getrealtime();
-	while((getrealtime() - initial_time) < time_to_sleep)
-		usleep(600);
-}
-
 
 void freeall(t_prop *prop)
 {
