@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   helpers.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yabuawad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/14 17:24:37 by yabuawad          #+#    #+#             */
+/*   Updated: 2026/05/14 17:24:39 by yabuawad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	ft_atoi(char *str)
@@ -33,27 +45,27 @@ int	ft_isdigit(int c)
 		return (0);
 }
 
-int input_check(char **argv)
+int	input_check(char **argv)
 {
-    int i;
-    int x;
-    
-    i = 1;
-    while(argv[i])
-    {
-        x = 0;
-        while(argv[i][x])
-        {
-            if(!ft_isdigit(argv[i][x]) || ft_atoi(argv[i]) == 0)
-            {
-                printf("Error\n");
-                return 0;
-            }
-            x++;
-        }
-        i++;
-    }
-    return 1;
+	int	i;
+	int	x;
+
+	i = 1;
+	while (argv[i])
+	{
+		x = 0;
+		while (argv[i][x])
+		{
+			if (!ft_isdigit(argv[i][x]) || ft_atoi(argv[i]) == 0)
+			{
+				printf("Error\n");
+				return (0);
+			}
+			x++;
+		}
+		i++;
+	}
+	return (1);
 }
 
 int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
@@ -70,8 +82,7 @@ int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-
-void freeall(t_prop *prop)
+void	freeall(t_prop *prop)
 {
 	free(prop->philo);
 	destroy_mutexes(prop);
