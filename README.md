@@ -47,8 +47,11 @@ or you can limit the number of meals:
 
 ## Resources
 **The Dining Philosophers Problem explained** https://en.wikipedia.org/wiki/Dining_philosophers_problem  
-**whats a thread ?** https://www.reddit.com/r/explainlikeimfive/comments/1jwix0w/eli5_what_are_threads_in_operating_system/
+
+**whats a thread ?** https://www.reddit.com/r/explainlikeimfive/comments/1jwix0w/eli5_what_are_threads_in_operating_system/  
+
 **Mutexes & Data Races** https://medium.com/@ruinadd/philosophers-42-guide-the-dining-philosophers-problem-893a24bc0fe2
+
 
 
 ### AI Usage
