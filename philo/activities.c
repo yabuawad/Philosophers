@@ -6,7 +6,7 @@
 /*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:24:23 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/14 17:29:25 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/05/18 12:38:33 by yabuawad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	eat(t_philo *philo)
 	philo->eat_times++;
 	pthread_mutex_unlock(&philo->prop->meallock);
 	myprint(philo->prop, philo->philo_id, "is eating");
+	zzz(philo->prop->time_to_eat);
 	pthread_mutex_unlock(philo->first_fork);
 	pthread_mutex_unlock(philo->second_fork);
-	zzz(philo->prop->time_to_eat);
 }

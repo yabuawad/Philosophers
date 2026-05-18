@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialise.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabuawad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:24:45 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/14 17:24:47 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/05/18 12:39:08 by yabuawad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,31 @@ int	init_propreties(char **argv, t_prop *prop)
 	return (1);
 }
 
-int	init_forks(t_prop *prop)
+int	init_forks(t_prop *prop, int i)
 {
-	int	i;
-
-	i = 0;
 	prop->forks = malloc(sizeof(pthread_mutex_t)
 			* prop->number_of_philosophers);
 	if (!prop->forks)
 		return (0);
 	while (i < prop->number_of_philosophers)
 	{
-		pthread_mutex_init(&prop->forks[i], NULL);
+		if (pthread_mutex_init(&prop->forks[i], NULL))
+		{
+			while (--i >= 0)
+				pthread_mutex_destroy(&prop->forks[i]);
+			return (0);
+		}
 		i++;
 	}
-	pthread_mutex_init(&prop->meallock, NULL);
-	pthread_mutex_init(&prop->printlock, NULL);
-	pthread_mutex_init(&prop->deathlock, NULL);
+	if (pthread_mutex_init(&prop->meallock, NULL)
+		|| pthread_mutex_init(&prop->printlock, NULL)
+		|| pthread_mutex_init(&prop->deathlock, NULL))
+	{
+		i = 0;
+		while (i < prop->number_of_philosophers)
+			pthread_mutex_destroy(&prop->forks[i++]);
+		return (0);
+	}
 	return (1);
 }
 

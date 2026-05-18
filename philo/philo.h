@@ -6,7 +6,7 @@
 /*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:25:04 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/14 17:30:14 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/05/18 12:40:42 by yabuawad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void						sleeep(t_philo *philo);
 void						think(t_philo *philo);
 void						freeall(t_prop *prop);
 int							init_propreties(char **argv, t_prop *prop);
-int							init_forks(t_prop *prop);
+int							init_forks(t_prop *prop,int i);
 long						getrealtime(void);
 void						eat(t_philo *philo);
 void						destroy_mutexes(t_prop *prop);

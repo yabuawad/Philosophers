@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabuawad <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:24:54 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/14 17:24:57 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/05/18 12:40:29 by yabuawad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ void	create_philos(t_prop *prop)
 		prop->philo[i].left_fork = &prop->forks[i];
 		prop->philo[i].right_fork = &prop->forks[(i + 1)
 			% prop->number_of_philosophers];
-		pthread_create(&prop->philo[i].thread, NULL, threading,
-			&prop->philo[i]);
+		if (pthread_create(&prop->philo[i].thread, NULL, threading,
+				&prop->philo[i]))
+			return ;
 		i++;
 	}
-	pthread_create(&prop->controller_id, NULL, controller, prop);
+	if (pthread_create(&prop->controller_id, NULL, controller, prop))
+		return ;
 	join_all(prop);
 }
 
@@ -61,7 +63,7 @@ int	main(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		return (1);
 	prop.start_time = getrealtime();
-	if (!init_propreties(argv, &prop) || !init_forks(&prop))
+	if (!init_propreties(argv, &prop) || !init_forks(&prop,0))
 		return (1);
 	create_philos(&prop);
 	freeall(&prop);
