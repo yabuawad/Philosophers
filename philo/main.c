@@ -6,7 +6,7 @@
 /*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:24:54 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/18 12:40:29 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/05/19 11:42:53 by yabuawad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ void	join_all(t_prop *prop)
 	i = 0;
 	while (i < prop->number_of_philosophers)
 	{
-		pthread_join(prop->philo[i].thread, NULL);
+		if(pthread_join(prop->philo[i].thread, NULL))
+			return ;
 		i++;
 	}
-	pthread_join(prop->controller_id, NULL);
+	if(pthread_join(prop->controller_id, NULL))
+		return;
 }
 
 void	create_philos(t_prop *prop)

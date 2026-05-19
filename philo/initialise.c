@@ -6,7 +6,7 @@
 /*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:24:45 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/18 12:39:08 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:22:02 by yabuawad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	init_forks(t_prop *prop, int i)
 	}
 	return (1);
 }
+
 
 void	destroy_mutexes(t_prop *prop)
 {
