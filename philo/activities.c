@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   activities.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yara <yara@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:24:23 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/18 16:05:50 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/06/12 23:43:24 by yara             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	sleeep(t_philo *philo)
 	if (isdead == 1)
 		return ;
 	myprint(philo->prop, philo->philo_id, "is sleeping");
-	zzz(philo->prop->time_to_sleep);
+	zzz(philo->prop->time_to_sleep,philo->prop);
 }
 
 void	think(t_philo *philo)
@@ -58,7 +58,7 @@ int	check_onephilo(t_philo *philo)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		myprint(philo->prop, philo->philo_id, "has taken a fork");
-		zzz(philo->prop->time_to_die);
+		zzz(philo->prop->time_to_die,philo->prop);
 		pthread_mutex_unlock(philo->left_fork);
 		print_death(philo->prop, philo->philo_id);
 		return (0);
@@ -87,7 +87,7 @@ void	eat(t_philo *philo)
 	philo->eat_times++;
 	pthread_mutex_unlock(&philo->prop->meallock);
 	myprint(philo->prop, philo->philo_id, "is eating");
-	zzz(philo->prop->time_to_eat);
+	zzz(philo->prop->time_to_eat,philo->prop);
 	pthread_mutex_unlock(philo->first_fork);
 	pthread_mutex_unlock(philo->second_fork);
 }

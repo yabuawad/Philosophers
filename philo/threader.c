@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threader.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yara <yara@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:25:20 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/14 17:30:20 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/06/12 23:40:28 by yara             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,10 @@ int	simulation_limit(t_prop *prop)
 void	*threading(void *arg)
 {
 	t_philo	*philo;
-	int		i;
 	int		isdead;
 
 	isdead = 0;
 	philo = (t_philo *)arg;
-	i = 0;
 	if (philo->philo_id % 2 == 0)
 		usleep(1000);
 	while (!isdead && !simulation_limit(philo->prop))

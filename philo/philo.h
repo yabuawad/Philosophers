@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabuawad <yabuawad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yara <yara@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 17:25:04 by yabuawad          #+#    #+#             */
-/*   Updated: 2026/05/18 12:40:42 by yabuawad         ###   ########.fr       */
+/*   Updated: 2026/06/12 23:40:14 by yara             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_propreties
 int							ft_atoi(char *str);
 int							ft_isdigit(int c);
 int							input_check(char **argv);
-void						zzz(int time_to_sleep);
+void						zzz(int time_to_sleep, t_prop *prog);
 void						sleeep(t_philo *philo);
 void						think(t_philo *philo);
 void						freeall(t_prop *prop);
